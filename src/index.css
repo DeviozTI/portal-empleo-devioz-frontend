@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  background-color: #fdfdfd;
+  overflow-x: hidden;
+}
+
+.loader {
+  border-top-color: transparent;
+  border-right-color: rgba(3, 16, 25, 0.6); /* Color principal con transparencia */
+  border-bottom-color: rgba(3, 16, 25, 0.6); /* Color principal con transparencia */
+  border-left-color: rgba(229, 231, 235, 0.6); /* Color del borde con transparencia */
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(30 58 138);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(56 78 179);
+}
