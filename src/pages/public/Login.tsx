@@ -13,7 +13,7 @@ import {
 
 const Login = () => {
   const navigate = useNavigate();
-  const { handleAuthLoginPostulant } = useAuth();
+  const { handleAuthLogin } = useAuth();
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoadingLoadData, setIsLoadingLoadData] = useState(false);
@@ -26,7 +26,7 @@ const Login = () => {
   const onLogin = async (dataForm: IFormLoginRequest) => {
     setIsLoadingLoadData(true);
 
-    const { ok, message } = await handleAuthLoginPostulant(dataForm);
+    const { ok, message } = await handleAuthLogin(dataForm);
 
     if (ok) {
       showSuccessToast(message);

@@ -10,7 +10,9 @@ import {
   ChangePassword,
   SearchJob,
   PersonalProfile,
-  EmailVerification
+  EmailVerification,
+  DashboardAdmin,
+  DataTableOffers,
 } from "../pages";
 import { PrivateRouter } from "./PrivateRouter";
 import ToastProvider from "../providers/ToastProvider";
@@ -34,6 +36,8 @@ export const AppRouter = () => {
         <Route path="/services" element={<Services />} />
         <Route path="/admin/auth" element={<Login />} /> */}
         <Route path="/admin/iniciar-sesion" element={<LoginAdmin />} />
+        <Route path="/admin/dashboard" element={<DashboardAdmin />} />
+        <Route path="/admin/dashboard/ofertas" element={<DataTableOffers />} />
         {/* <Route path="/products/:productId" element={<LazyProducts />} /> */}
         <Route
           path="/admin/*"

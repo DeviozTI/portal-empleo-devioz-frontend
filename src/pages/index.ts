@@ -8,4 +8,6 @@ export { default as PersonalProfile } from "./public/PersonalProfile";
 export { default as EmailVerification } from "./public/EmailVerification";
 
 export { default as LoginAdmin } from "./admin/LoginAdmin";
+export { default as DashboardAdmin } from "./admin/DashboardAdmin";
+export { default as DataTableOffers } from "./admin/DataTableOffers";
 

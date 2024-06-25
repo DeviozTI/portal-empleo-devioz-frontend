@@ -2,25 +2,44 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import PublicLayout from "../../layouts/PublicLayout";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
-
-interface FormData {
-  email: string;
-  password: string;
-}
+import { IFormLoginRequest } from "../../interface/auth";
+import useAuth from "../../hooks/useAuth";
+import { Loader } from "../../components";
+import { useAtom } from "jotai";
+import { userResponseAtom } from "../../store/user";
+import { showErrorToast } from '../../components/common/Toast';
 
 const Login = () => {
+  const { handleAuthLogin } = useAuth();
+  const [userResponse] = useAtom(userResponseAtom);
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<IFormLoginRequest>();
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-    // Handle login logic here
-    // navigate('/dashboard');
+  const onSubmit = async (data: IFormLoginRequest) => {
+    setIsLoading(true);
+    const { ok, message } = await handleAuthLogin({
+      ...data,
+      isCompany: true,
+    });
+    setIsLoading(false);
+    if (ok) {
+      console.log(message);
+      localStorage.setItem("isCompany", String(true));
+      return;
+    }
+    showErrorToast(message);
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  console.log(userResponse);
 
   return (
     <PublicLayout>
@@ -41,7 +60,7 @@ const Login = () => {
               </label>
               <input
                 type="email"
-                {...register("email", {
+                {...register("correo", {
                   required: "El correo electrónico es obligatorio",
                   pattern: {
                     value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
@@ -50,12 +69,12 @@ const Login = () => {
                 })}
                 placeholder="Ingresa tu correo electrónico"
                 className={`w-full px-4 py-2 text-black placeholder-gray-500 transition duration-300 ease-in-out bg-white border rounded-lg ${
-                  errors.email ? "border-red-500" : "border-gray-300"
+                  errors.correo ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:border-blue-500`}
               />
-              {errors.email && (
+              {errors.correo && (
                 <p className="mt-1 text-sm text-red-500">
-                  {errors.email.message}
+                  {errors.correo.message}
                 </p>
               )}
             </div>
@@ -66,7 +85,7 @@ const Login = () => {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  {...register("password", {
+                  {...register("contrasenia", {
                     required: "La contraseña es obligatoria",
                     minLength: {
                       value: 6,
@@ -75,7 +94,7 @@ const Login = () => {
                   })}
                   placeholder="Ingresa tu contraseña"
                   className={`w-full px-4 py-2 text-black placeholder-gray-500 transition duration-300 ease-in-out bg-white border rounded-lg ${
-                    errors.password ? "border-red-500" : "border-gray-300"
+                    errors.contrasenia ? "border-red-500" : "border-gray-300"
                   } focus:outline-none focus:border-blue-500`}
                 />
                 <button
@@ -90,9 +109,9 @@ const Login = () => {
                   )}
                 </button>
               </div>
-              {errors.password && (
+              {errors.contrasenia && (
                 <p className="mt-1 text-sm text-red-500">
-                  {errors.password.message}
+                  {errors.contrasenia.message}
                 </p>
               )}
             </div>

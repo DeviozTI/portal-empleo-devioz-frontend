@@ -2,6 +2,7 @@
 export interface IFormLoginRequest {
   correo: string;
   contrasenia: string;
+  isCompany?: boolean;
 }
 
 //REGISTER REQUEST

@@ -69,7 +69,7 @@ const useAuth = () => {
     }
   };
 
-  const handleAuthLoginPostulant = async (dataForm: IFormLoginRequest) => {
+  const handleAuthLogin= async (dataForm: IFormLoginRequest) => {
     try {
       const response = await empleoDeviozAPI.post(
         "/auth/iniciar-sesion",
@@ -152,7 +152,7 @@ const useAuth = () => {
     isAuthenticated,
     handleAuthCompleteRegisterPostulant,
     handleAuthIncompleteRegisterPostulant,
-    handleAuthLoginPostulant,
+    handleAuthLogin,
     refreshToken,
     //verifyToken,
     handleVerifyEmailDuplicate,

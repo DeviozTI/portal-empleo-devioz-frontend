@@ -6,3 +6,5 @@ export * from "./common/Loader";
 export * from "./public/OfferContent";
 export * from "./public/LocationSelect";
 export * from "./public/ButtonsSocial";
+export * from "./dashboard/SideBar";
+export * from "./dashboard/DataTable";
