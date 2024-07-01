@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import PublicLayout from "../layouts/PublicLayout";
 import {
   FaCode,
@@ -20,11 +20,7 @@ import OfferContent from "../components/public/OfferContent";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { showInfoToast } from "../components/common/Toast";
 import LocationSelect from "../components/public/LocationSelect";
-
-interface ISearchForm {
-  jobTitle: string;
-  location: number; // Actualizado a int
-}
+import { ISearchForm } from "../interface/employment";
 
 const ubicaciones = [
   {
@@ -95,7 +91,8 @@ const Home = () => {
             Encuentra tu Trabajo Ideal en Devioz Trabajos
           </h1>
           <p className="mb-12 text-2xl text-white animate-fade-in">
-            Encuentra el empleo que encaja contigo, más de 43.176 ofertas disponibles
+            Encuentra el empleo que encaja contigo, más de 43.176 ofertas
+            disponibles
           </p>
           <div className="flex justify-center mb-12 space-x-4">
             <button className="px-6 py-3 font-semibold text-black transition duration-300 transform bg-white rounded-full shadow-md cursor-pointer hover:bg-gray-100 active:scale-95 hover:scale-105">

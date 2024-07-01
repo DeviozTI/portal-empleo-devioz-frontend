@@ -9,13 +9,8 @@ import useAuth from "../../hooks/useAuth";
 import { Loader } from "../../components";
 import { showSuccessToast } from "../../components/common/Toast";
 import { useNavigate } from "react-router-dom";
-
-//CONVERT YYYY-MM-DD TO DD/MM/YYYY
-export const formatFechaNacimiento = (fecha: string) => {
-  if (!fecha) return "";
-  const [year, month, day] = fecha.split("-");
-  return `${day}/${month}/${year}`;
-};
+import { IFormRegisterPostulantRequestForm } from "../../interface/auth";
+import { formatFechaNacimiento } from "../../utils/formatDate.utils";
 
 const EmailVerification = () => {
   const { handleVerifyToken } = useEmail();
@@ -51,7 +46,7 @@ const EmailVerification = () => {
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<IFormRegisterPostulantRequestForm>();
 
   const onVerifyToken = async (token: string) => {
     const { ok, message, email, isActive } = await handleVerifyToken(token);
@@ -83,18 +78,20 @@ const EmailVerification = () => {
 
   const password = watch("contrasenia");
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: IFormRegisterPostulantRequestForm) => {
     const formattedData = {
       correo: email,
       contrasenia: data.contrasenia,
       nombres: data.nombres,
       apellidos: data.apellidos,
-      genero_id: Number(data.genero),
+      genero_id: Number(data.genero_id),
       fecha_nacimiento: formatFechaNacimiento(data.fecha_nacimiento),
-      distrito_id: Number(data.distrito),
+      distrito_id: Number(data.distrito_id),
       celular: data.celular,
-      tipo_documento_id: Number(data.tipo_documento),
+      tipo_documento_id: Number(data.tipo_documento_id),
       numero_documento: data.numero_documento,
+      isCompany: false,
+      rol_id: Role.POSTULANTE,
     };
 
     if (stage === 3) {
@@ -327,11 +324,11 @@ const EmailVerification = () => {
                           Tipo de Documento
                         </label>
                         <select
-                          {...register("tipo_documento", {
+                          {...register("tipo_documento_id", {
                             required: "El tipo de documento es obligatorio",
                           })}
                           className={`w-full px-4 py-2 text-black placeholder-gray-500 transition duration-300 ease-in-out bg-white border rounded-lg ${
-                            errors.tipo_documento
+                            errors.tipo_documento_id
                               ? "border-red-500"
                               : "border-gray-300"
                           } focus:outline-none focus:border-blue-500`}
@@ -343,9 +340,9 @@ const EmailVerification = () => {
                           <option value="2">Pasaporte</option>
                           <option value="3">Carnet de Extranjería</option>
                         </select>
-                        {errors.tipo_documento && (
+                        {errors.tipo_documento_id && (
                           <p className="mt-1 text-sm text-red-500">
-                            {String(errors.tipo_documento.message)}
+                            {String(errors.tipo_documento_id.message)}
                           </p>
                         )}
                       </div>
@@ -385,11 +382,13 @@ const EmailVerification = () => {
                           Género
                         </label>
                         <select
-                          {...register("genero", {
+                          {...register("genero_id", {
                             required: "El género es obligatorio",
                           })}
                           className={`w-full px-4 py-2 text-black placeholder-gray-500 transition duration-300 ease-in-out bg-white border rounded-lg ${
-                            errors.genero ? "border-red-500" : "border-gray-300"
+                            errors.genero_id
+                              ? "border-red-500"
+                              : "border-gray-300"
                           } focus:outline-none focus:border-blue-500`}
                         >
                           <option value="">Selecciona tu género</option>
@@ -397,9 +396,9 @@ const EmailVerification = () => {
                           <option value="2">Femenino</option>
                           <option value="3">Otro</option>
                         </select>
-                        {errors.genero && (
+                        {errors.genero_id && (
                           <p className="mt-1 text-sm text-red-500">
-                            {String(errors.genero.message)}
+                            {String(errors.genero_id.message)}
                           </p>
                         )}
                       </div>
@@ -430,11 +429,11 @@ const EmailVerification = () => {
                           Departamento
                         </label>
                         <select
-                          {...register("departamento", {
+                          {...register("departamento_id", {
                             required: "El departamento es obligatorio",
                           })}
                           className={`w-full px-4 py-2 text-black placeholder-gray-500 transition duration-300 ease-in-out bg.white border rounded-lg ${
-                            errors.departamento
+                            errors.departamento_id
                               ? "border-red-500"
                               : "border-gray-300"
                           } focus:outline-none focus:border-blue-500`}
@@ -460,9 +459,9 @@ const EmailVerification = () => {
                             </option>
                           ))}
                         </select>
-                        {errors.departamento && (
+                        {errors.departamento_id && (
                           <p className="mt-1 text-sm text-red-500">
-                            {String(errors.departamento.message)}
+                            {String(errors.departamento_id.message)}
                           </p>
                         )}
 
@@ -471,11 +470,11 @@ const EmailVerification = () => {
                         </label>
 
                         <select
-                          {...register("provincia", {
+                          {...register("provincia_id", {
                             required: "La provincia es obligatoria",
                           })}
                           className={`w-full px-4 py-2 text-black placeholder-gray-500 transition duration-300 ease-in-out bg-white border rounded-lg ${
-                            errors.provincia
+                            errors.provincia_id
                               ? "border-red-500"
                               : "border-gray-300"
                           } focus:outline-none focus:border-blue-500`}
@@ -506,9 +505,9 @@ const EmailVerification = () => {
                           ))}
                         </select>
 
-                        {errors.provincia && (
+                        {errors.provincia_id && (
                           <p className="mt-1 text-sm text-red-500">
-                            {String(errors.provincia.message)}
+                            {String(errors.provincia_id.message)}
                           </p>
                         )}
 
@@ -517,11 +516,11 @@ const EmailVerification = () => {
                         </label>
 
                         <select
-                          {...register("distrito", {
+                          {...register("distrito_id", {
                             required: "El distrito es obligatorio",
                           })}
                           className={`w-full px-4 py-2 text-black placeholder-gray-500 transition duration-300 ease-in-out bg-white border rounded-lg ${
-                            errors.distrito
+                            errors.distrito_id
                               ? "border-red-500"
                               : "border-gray-300"
                           } focus:outline-none focus:border-blue-500`}
@@ -540,9 +539,9 @@ const EmailVerification = () => {
                             </option>
                           ))}
                         </select>
-                        {errors.distrito && (
+                        {errors.distrito_id && (
                           <p className="mt-1 text-sm text-red-500">
-                            {String(errors.distrito.message)}
+                            {String(errors.distrito_id.message)}
                           </p>
                         )}
                       </div>

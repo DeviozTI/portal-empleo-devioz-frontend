@@ -2,7 +2,7 @@
 export interface IFormLoginRequest {
   correo: string;
   contrasenia: string;
-  isCompany?: boolean;
+  isCompany: boolean;
 }
 
 //REGISTER REQUEST
@@ -11,16 +11,16 @@ export interface IFormRegisterPostulant {
   contrasenia: string;
   nombres: string;
   apellidos: string;
-  genero: string;
-  fecha_nacimiento: string; // Formato: DD-MM-AAAA
-  distrito: string;
+  genero_id: number;
+  fecha_nacimiento: string; // Suponiendo que formatFechaNacimiento devuelve un string
+  distrito_id: number;
   celular: string;
-  tipo_documento: string;
+  tipo_documento_id: number;
   numero_documento: string;
-  confirmContrasenia: string;
-  codigoVerificacion: string;
-  departamento: string;
-  provincia: string;
+}
+
+export interface IFormIncompleteRegisterUserRequest {
+  correo: string;
 }
 
 //REGISTER RESPONSE
@@ -35,21 +35,23 @@ export interface IFormRegisterPostulantRequest {
   celular: string;
   tipo_documento_id: number;
   numero_documento: string;
-}
-
-export interface IResponseUser {
-  access_token: string;
-  dataUser?: IDataUser;
-  // dataUser?: any;
   isCompany: boolean;
-  message: string;
+  rol_id: number;
 }
 
-export interface IDataUser {
+export interface IFormRegisterPostulantRequestForm {
   correo: string;
+  contrasenia: string;
   nombres: string;
   apellidos: string;
-  foto_perfil: string | null;
-  cuenta_activa: boolean;
+  genero_id: number;
+  fecha_nacimiento: string;
   distrito_id: number;
+  departamento_id: number;
+  provincia_id: number;
+  confirmContrasenia: string;
+  celular: string;
+  tipo_documento_id: number;
+  numero_documento: string;
+  isCompany: boolean;
 }

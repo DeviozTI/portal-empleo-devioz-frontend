@@ -7,11 +7,15 @@ import useAuth from "../../hooks/useAuth";
 import { Loader } from "../../components";
 import { useAtom } from "jotai";
 import { userResponseAtom } from "../../store/user";
-import { showErrorToast } from '../../components/common/Toast';
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "../../components/common/Toast";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { handleAuthLogin } = useAuth();
-  const [userResponse] = useAtom(userResponseAtom);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -26,20 +30,22 @@ const Login = () => {
       ...data,
       isCompany: true,
     });
-    setIsLoading(false);
     if (ok) {
-      console.log(message);
-      localStorage.setItem("isCompany", String(true));
+      showSuccessToast(message);
+      setTimeout(() => {
+        navigate("/admin/principal");
+      }, 2500);
+
       return;
     }
+
+    setIsLoading(false);
     showErrorToast(message);
   };
 
   if (isLoading) {
     return <Loader />;
   }
-
-  console.log(userResponse);
 
   return (
     <PublicLayout>

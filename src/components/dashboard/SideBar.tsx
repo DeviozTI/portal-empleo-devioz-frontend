@@ -7,27 +7,32 @@ import {
   FaBars,
   FaTimes,
 } from "react-icons/fa";
+import useAuth from "../../hooks/useAuth";
 
 const navOptions = [
   {
-    href: "/admin/dashboard/",
+    id: 0,
+    href: "/admin/principal/",
     icon: <FaTachometerAlt />,
     label: "Principal",
   },
   {
-    href: "/admin/dashboard/ofertas/",
+    id: 1,
+    href: "/admin/ofertas/",
     icon: <FaUsers />,
     label: "Ofertas",
   },
   {
-    href: "/admin/dashboard/configuracion/",
+    id: 2,
+    href: "/admin/configuracion/",
     icon: <FaCog />,
     label: "Configuración",
   },
   {
-    href: "/logout",
+    id: 3,
+    href: "/",
     icon: <FaSignOutAlt />,
-    label: "Logout",
+    label: "Salir",
   },
 ];
 
@@ -37,6 +42,13 @@ interface SideBarProps {
 
 export const SideBar = ({ children }: SideBarProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const { handleLogOut } = useAuth();
+
+  const onLogout = (id: number) => {
+    if (id === 3) {
+      handleLogOut();
+    }
+  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -73,6 +85,7 @@ export const SideBar = ({ children }: SideBarProps) => {
             <a
               key={index}
               href={option.href}
+              onClick={() => onLogout(index)}
               className="flex items-center px-6 py-3 transition duration-300 ease-in-out transform rounded hover:bg-gray-700 hover:translate-x-2"
             >
               <div className="flex items-center justify-center w-8 h-8">
@@ -83,9 +96,7 @@ export const SideBar = ({ children }: SideBarProps) => {
           ))}
         </nav>
       </div>
-      <div className="relative flex-1 ml-20">
-        {children}
-      </div>
+      <div className="relative flex-1 ml-20">{children}</div>
     </div>
   );
 };

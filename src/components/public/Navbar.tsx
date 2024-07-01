@@ -60,49 +60,52 @@ const Navbar = () => {
         <div className="flex items-center space-x-3">
           {isAuthenticated ? (
             <div className="relative">
-            <div className="flex items-center gap-6">
-              <a 
-                href="/mis-postulaciones" 
-                className="text-lg text-white transition-all duration-300 ease-in-out hover:text-gray-300"
-              >
-                Mis postulaciones
-              </a>
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center text-sm transition-all duration-300 ease-in-out bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 hover:bg-gray-700"
+              <div className="flex items-center gap-6">
+                <a
+                  href="/mis-postulaciones"
+                  className="text-lg text-white transition-all duration-300 ease-in-out hover:text-gray-300"
                 >
-                  <img
-                    className="w-10 h-10 rounded-full"
-                    src="https://storage.googleapis.com/portal-empleos-devioz-page/WhatsApp%20Image%202024-05-30%20at%203.40.35%20PM.jpeg"
-                    alt="user avatar"
-                  />
-                </button>
+                  Mis postulaciones
+                </a>
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    className="flex items-center text-sm transition-all duration-300 ease-in-out bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 hover:bg-gray-700"
+                  >
+                    <img
+                      className="w-10 h-10 rounded-full"
+                      src={
+                        userResponse?.foto_perfil
+                          ? userResponse?.foto_perfil
+                          : "https://storage.googleapis.com/portal-empleos-devioz-page/WhatsApp%20Image%202024-05-30%20at%203.40.35%20PM.jpeg"
+                      }
+                      alt="user avatar"
+                    />
+                  </button>
+                </div>
+              </div>
+              <div
+                className={`absolute right-0 z-10 w-56 py-2 mt-2 bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out transform ${
+                  dropdownOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
+                }`}
+                style={{
+                  visibility: dropdownOpen ? "visible" : "hidden",
+                }}
+              >
+                {menuItems.map((item, index) => (
+                  <a
+                    key={index}
+                    href={item.href}
+                    onClick={item.onClick}
+                    className="flex items-center px-4 py-2 text-gray-700 transition-all duration-300 ease-in-out hover:bg-gray-100"
+                  >
+                    <item.icon className="mr-2" />
+                    {item.label}
+                  </a>
+                ))}
               </div>
             </div>
-            <div
-              className={`absolute right-0 z-10 w-56 py-2 mt-2 bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out transform ${
-                dropdownOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
-              }`}
-              style={{
-                visibility: dropdownOpen ? "visible" : "hidden",
-              }}
-            >
-              {menuItems.map((item, index) => (
-                <a
-                  key={index}
-                  href={item.href}
-                  onClick={item.onClick}
-                  className="flex items-center px-4 py-2 text-gray-700 transition-all duration-300 ease-in-out hover:bg-gray-100"
-                >
-                  <item.icon className="mr-2" />
-                  {item.label}
-                </a>
-              ))}
-            </div>
-          </div>
-          
           ) : (
             <button
               onClick={() => navigate("/auth/iniciar-sesion")}

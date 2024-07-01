@@ -1,4 +1,4 @@
-import { useAtom } from "jotai";
+import { useAtom } from "jotai/react";
 import { handleManagmentError } from "../helpers/HookManagmentError";
 import { AxiosError } from "axios";
 import { empleoDeviozAPI } from "../api/empleoDeviozApi";
@@ -6,11 +6,16 @@ import {
   IFormLoginRequest,
   IFormRegisterPostulantRequest,
 } from "../interface/auth";
-import { isAuthenticatedAtom, userResponseAtom } from "../store/user";
+import {
+  isAuthenticatedAtom,
+  isCompanyAtom,
+  userResponseAtom,
+} from "../store/user";
 
 const useAuth = () => {
   const [userResponse, setUserResponse] = useAtom(userResponseAtom);
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
+  const [, setIsCompany] = useAtom(isCompanyAtom);
 
   const handleAuthCompleteRegisterPostulant = async (
     dataForm: IFormRegisterPostulantRequest,
@@ -48,10 +53,10 @@ const useAuth = () => {
     }
   };
 
-  const handleAuthIncompleteRegisterPostulant = async (correo: string) => {
+  const handleAuthIncompleteRegisterUser = async (correo: string) => {
     try {
       const response = await empleoDeviozAPI.post(
-        "/auth/registro-incompleto-postulante",
+        "/auth/registro-incompleto-usuario",
         {
           correo,
         }
@@ -69,7 +74,8 @@ const useAuth = () => {
     }
   };
 
-  const handleAuthLogin= async (dataForm: IFormLoginRequest) => {
+  //CONSIDERAR DESDE ACÁ
+  const handleAuthLogin = async (dataForm: IFormLoginRequest) => {
     try {
       const response = await empleoDeviozAPI.post(
         "/auth/iniciar-sesion",
@@ -78,7 +84,7 @@ const useAuth = () => {
 
       const { access_token, dataUser, isCompany, message } = response.data;
 
-      setUserResponse(dataUser);
+      setUserResponse({ ...dataUser, isCompany });
 
       localStorage.setItem("isAuthenticated", String(true));
       localStorage.setItem("accessToken", access_token);
@@ -86,6 +92,7 @@ const useAuth = () => {
       localStorage.setItem("dataUser", JSON.stringify(dataUser));
 
       setIsAuthenticated(true);
+      setIsCompany(isCompany);
 
       return {
         message,
@@ -145,16 +152,14 @@ const useAuth = () => {
     }
   };
 
-
   return {
     handleLogOut,
     userResponse,
     isAuthenticated,
     handleAuthCompleteRegisterPostulant,
-    handleAuthIncompleteRegisterPostulant,
+    handleAuthIncompleteRegisterUser,
     handleAuthLogin,
     refreshToken,
-    //verifyToken,
     handleVerifyEmailDuplicate,
   };
 };

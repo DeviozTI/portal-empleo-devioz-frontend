@@ -15,7 +15,6 @@ empleoDeviozAPI.interceptors.request.use(
     const token = localStorage.getItem("accessToken");
 
     if (token) {
-      console.log(token)
       const decodedToken: { exp: number } = jwtDecode(token);
       const expirationTime = decodedToken.exp;
       const currentTime = Date.now() / 1000;

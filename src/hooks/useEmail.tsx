@@ -49,8 +49,6 @@ const useEmail = () => {
         },
       });
 
-      console.log(response.data)
-
       return {
         message: response.data.message,
         statusCode: response.status,

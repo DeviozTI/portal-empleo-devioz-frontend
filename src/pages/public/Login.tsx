@@ -26,7 +26,10 @@ const Login = () => {
   const onLogin = async (dataForm: IFormLoginRequest) => {
     setIsLoadingLoadData(true);
 
-    const { ok, message } = await handleAuthLogin(dataForm);
+    const { ok, message } = await handleAuthLogin({
+      ...dataForm,
+      isCompany: false,
+    });
 
     if (ok) {
       showSuccessToast(message);

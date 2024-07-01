@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PublicLayout from "../../layouts/PublicLayout";
 import { useForm } from "react-hook-form";
 import { Loader } from "../../components";
-import { IFormRegisterPostulant } from "../../interface/auth";
+import { IFormIncompleteRegisterUserRequest } from "../../interface/auth";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -17,7 +17,7 @@ import useEmail from "../../hooks/useEmail";
 const Register = () => {
   const navigate = useNavigate();
   const { handleSendEmailVerification } = useEmail();
-  const { handleAuthIncompleteRegisterPostulant } = useAuth();
+  const { handleAuthIncompleteRegisterUser } = useAuth();
   const [counterSendEmailCode, setCounterSendEmailCode] = useState(60);
   const [isButtonSendEmailCodeDisabled, setIsButtonSendEmailCodeDisabled] =
     useState(false);
@@ -30,12 +30,11 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
     watch,
-    setError,
-  } = useForm<IFormRegisterPostulant>();
+  } = useForm<IFormIncompleteRegisterUserRequest>();
 
   const onVerifyEmailDuplicate = async (email: string) => {
     setIsLoadingLoadData(true);
-    const { message, ok } = await handleAuthIncompleteRegisterPostulant(email);
+    const { message, ok } = await handleAuthIncompleteRegisterUser(email);
     if (ok) {
       showInfoToast(message);
       setStage(2);
@@ -46,14 +45,8 @@ const Register = () => {
     showErrorToast(message);
   };
 
-  const onSubmit = async (data: IFormRegisterPostulant) => {
+  const onSubmit = async (data: IFormIncompleteRegisterUserRequest) => {
     if (stage === 1) {
-      if (data.contrasenia !== data.confirmContrasenia) {
-        setError("confirmContrasenia", {
-          message: "Las contraseñas no coinciden",
-        });
-        return;
-      }
       await onVerifyEmailDuplicate(data.correo);
     }
   };
